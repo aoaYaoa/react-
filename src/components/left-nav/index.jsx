@@ -1,49 +1,63 @@
 import React, {Component} from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink,withRouter} from 'react-router-dom'
+import menuList from '../../config/menu-config'
 import './index.less'
 import {Menu, Icon}from 'antd'
 import Logo from '../../assets/images/logo.png'
-export default class LeftNav extends Component {
-  render() {
-    const Item = Menu.Item
-    const SubMenu = Menu.SubMenu;
-    return (
-      <div className="leftNav">
-        <header >
-          <NavLink to="/home" className='nav'>
-            <img src={Logo} alt="logo"/>
-            <h2>尚硅谷后台</h2>
-          </NavLink>
+ class LeftNav extends Component {
+   componentWillMount() {
+    this.menu= this.createMenu(menuList)
+   }
 
-        </header>
-        <Menu mode="inline" theme="dark">
-          <Item>
-            <NavLink to="/home">
-              <Icon type="home"/>
-              <span>首页</span>
-            </NavLink>
-          </Item>
-          <SubMenu title={<span><Icon type="appstore"/><span>商品</span></span>}>
+   //判断是否有子菜单
 
-            <Item >
-              <NavLink to="category">
-                <Icon type="pic-center"/>
-                <span> 品类管理</span>
-              </NavLink>
-            </Item>
+   createMenu = (menuList) => {
+     return menuList.map(item => {
+       const Item = Menu.Item
+       const SubMenu = Menu.SubMenu;
+       if (item.children) {
+         const {pathname} = this.props.location;
+         //找是否有与children中匹配的pathname
+         const result = item.children.find(item => item.key === pathname)
+         if (result) {
+           //children中有与pathname匹配路径，记录item.key
+           this.openKey = item.key;
+         }
+         return <SubMenu key={item.key} title={<span><Icon type={item.icon}/><span>{item.title}</span></span>}>
+           {
+             this.createMenu(item.children)
+           }
+         </SubMenu>
+       } else {
+         return <Item key={item.key}>
+           <NavLink to={item.key}>
+             <Icon type={item.icon}/>
+             <span>{item.title}</span>
+           </NavLink>
+         </Item>
+       }
+     })
+   }
 
-
-            <Item >
-              <NavLink to="/product">
-                <Icon type="pic-left"/>
-                <span>商品分类</span>
-              </NavLink>
-            </Item>
-
-
-          </SubMenu>
-        </Menu>
-      </div>
-    )
-  }
-}
+   render() {
+     const Item = Menu.Item
+     const SubMenu = Menu.SubMenu;
+     const {pathname} = this.props.location
+     return (
+       <div className="leftNav">
+         <header >
+           <NavLink to="/home" className='nav'>
+             <img src={Logo} alt="logo"/>
+             <h2>尚硅谷后台</h2>
+           </NavLink>
+         </header>
+         <Menu mode="inline" theme="dark" selectedKeys={[pathname]} defaultOpenKeys={[this.openKey]}>
+           {
+             this.menu
+           }
+         </Menu>
+       </div>
+     )
+   }
+ }
+export default withRouter(LeftNav);
