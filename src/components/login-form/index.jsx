@@ -1,4 +1,6 @@
 import React,{Component}from 'react'
+
+import PropTypes from 'prop-types'
 import {
   Form,
   Icon,
@@ -7,13 +9,19 @@ import {
   message
 } from 'antd';
 class LoginForm extends Component{
+  static propTypes={
+    login:PropTypes.func.isRequired
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
     const {validateFields,resetFields}= this.props.form;
     validateFields((err, values) => {
-      if (!err) {
+      if (!err){
         console.log('获取的数据', values);
+        const {username,password} = values
+        this.props.login(username,password)
+
       }else{
         resetFields(['password'])
        const eMsg = Object.values(err).reduce((prev,curr)=> prev+curr.errors[0].message+ ' ','')
@@ -28,7 +36,7 @@ class LoginForm extends Component{
     return(
       <Form className="login-form" onSubmit={this.handleSubmit}>
         <Item>
-          {getFieldDecorator('userName',
+          {getFieldDecorator('username',
             {
             rules: [{ required: true, message:'请输入用户名!' },
               {min:5 , message:'用户名不能少于5位'},
@@ -44,7 +52,7 @@ class LoginForm extends Component{
           {getFieldDecorator('password',
             {
             rules: [{ required: true, message: '请输入密码!' },
-              {min:6 , message:'密码不能少于6位'},
+              {min: 5, message:'密码不能少于5位'},
               {max:16,message:'密码不能超过16位'},
               {pattern:/^[a-zA-Z0-9_]+$/,message:'必须是英文数字和下划线'}],
           })(

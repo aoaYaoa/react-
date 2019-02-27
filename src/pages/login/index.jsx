@@ -1,13 +1,40 @@
 import React,{Component} from 'react'
-import Logo from './logo.png'
+import Logo from '../../assets/images/logo.png'
 import './index.less'
 import '../../assets/index.less'
 import LoginForm from '../../components/login-form'
+import {reqLogin} from '../../api'
 
 export default class Login extends Component{
-    render(){
+  state={
+    errMsg:''
+  }
+  //登陆方法
+  login = async (username, password) => {
+    //请求登陆
+    console.log(username);
+    const result = await reqLogin(username, password);
+    console.log(result)
+    if (result.status === 0) {
+      //用户登陆成功
+      //保存用户信息
 
+      //跳转到admin页面
+      this.props.history.replace('/');
+    } else {
+      //用户登陆失败
+      //提示错误信息
+      this.setState({
+        errMsg:result.msg
+      })
+    }
+  }
+
+  render(){
+     const {errMsg} = this.state;
+     const height = errMsg ? 30 : 0;
         return (
+
             <div className="login">
                 <header className="header">
                     <img src={Logo} alt="logo"/>
@@ -15,8 +42,9 @@ export default class Login extends Component{
                 </header>
                 <section>
                     <div className="register">
+                      <div className='err-msg' style={{height}}>{errMsg}</div>
                         <h2>用户登录</h2>
-                        <LoginForm/>
+                        <LoginForm login={this.login}/>
 
                     </div>
                 </section>
