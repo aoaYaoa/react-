@@ -12,8 +12,6 @@ import Logo from '../../assets/images/logo.png'
    //判断是否有子菜单
 
    createMenu = (menuList) => {
-
-
      return menuList.map(item => {
        const Item = Menu.Item
        const SubMenu = Menu.SubMenu;
