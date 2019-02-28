@@ -4,7 +4,8 @@ import './index.less'
 import '../../assets/index.less'
 import LoginForm from '../../components/login-form'
 import {reqLogin} from '../../api'
-
+import {setItem} from '../../utils/stroageUntils';
+import MemonryUntils from '../../utils/memonryUntils'
 export default class Login extends Component{
   state={
     errMsg:''
@@ -12,13 +13,14 @@ export default class Login extends Component{
   //登陆方法
   login = async (username, password) => {
     //请求登陆
-    console.log(username);
     const result = await reqLogin(username, password);
     console.log(result)
     if (result.status === 0) {
       //用户登陆成功
       //保存用户信息
-
+      setItem(result.data);
+      //在内存中保存一份
+      MemonryUntils.user = result.data;
       //跳转到admin页面
       this.props.history.replace('/');
     } else {

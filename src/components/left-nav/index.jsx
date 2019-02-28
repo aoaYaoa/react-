@@ -40,8 +40,6 @@ import Logo from '../../assets/images/logo.png'
    }
 
    render() {
-     const Item = Menu.Item
-     const SubMenu = Menu.SubMenu;
      const {pathname} = this.props.location
      return (
        <div className="leftNav">

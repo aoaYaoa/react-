@@ -6,6 +6,7 @@ import {BrowserRouter as Router,Route ,Switch}from 'react-router-dom'
 import Login from './pages/login'
 import Admin from './pages/admin'
 export default  class App extends Component{
+
     render(){
         return  (
             <Router>

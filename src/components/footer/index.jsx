@@ -4,7 +4,7 @@ export default class Footer extends Component{
   render(){
     return(
       <div className="footer">
-        <p>欢迎使用尚硅谷后台管理系统</p>
+        <p>推荐使用谷歌浏览器，可以获得更佳页面操作体验</p>
       </div>
     )
   }
