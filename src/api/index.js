@@ -26,3 +26,6 @@ export const reqWeather = city => {
       })
   })
 }
+export const reqCategories = parentId => ajax(prefix + '/manage/category/list', {parentId});
+export const reqAddCategory = (parentId, categoryName) => ajax(prefix + '/manage/category/add', {parentId, categoryName}, 'POST');
+export const reqUpdateCategoryName = (categoryId, categoryName) => ajax(prefix + '/manage/category/update', {categoryId, categoryName}, 'POST');

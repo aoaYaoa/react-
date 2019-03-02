@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Row,Col} from 'antd'
+import {Layout} from 'antd'
 import {Route,Switch,Redirect} from 'react-router-dom'
 import Home from '../home'
 import Category from '../category'
@@ -13,22 +13,25 @@ import LeftNav from '../../components/left-nav'
 import Header from '../../components/header'
 import Footer from '../../components/footer'
 import MemonryUntils from '../../utils/memonryUntils'
-import './index.less'
 export default class Amdin extends Component{
     render(){
       const user = MemonryUntils.user;
+      const {
+        Sider,
+      Content
+      } = Layout;
       if (!user || !user._id) {
         return <Redirect to='/login'/>
       }
         return (
 
-              <Row className='main'>
-                  <Col span={4} className='left'>
+              <Layout style={{minHeight: '100vh'}}>
+                  <Sider>
                       <LeftNav/>
-                  </Col>
-                  <Col span={20} className='conent'>
+                  </Sider>
+                  <Layout>
                       <Header/>
-                      <div className="conent">
+                    <Content style={{margin: 18}}>
                         <Switch>
                           <Route path={'/home'} component={Home}/>
                           <Route path={'/category'} component={Category}/>
@@ -40,10 +43,10 @@ export default class Amdin extends Component{
                           <Route path='/charts/bar' component={Bar}/>
                           <Redirect to='/home'/>
                         </Switch>
-                      </div>
+                      </Content>
                       <Footer/>
-                  </Col>
-              </Row>
+                  </Layout>
+              </Layout>
 
         )
     }
